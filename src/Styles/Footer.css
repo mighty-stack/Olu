@@ -1,0 +1,74 @@
+.footer {
+  background: #020617;
+  color: #cbd5f5;
+  padding: 60px 0 30px;
+  border-top: 1px solid #0f172a;
+}
+
+/* BRAND */
+.footer h4 {
+  font-weight: 700;
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer p {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* LINKS */
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #cbd5f5;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: #3b82f6;
+}
+
+/* SOCIAL */
+.social-icons a {
+  margin-right: 15px;
+  color: #cbd5f5;
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: #3b82f6;
+  transform: translateY(-3px);
+}
+
+/* BOTTOM */
+.footer-bottom {
+  border-top: 1px solid #0f172a;
+  padding-top: 20px;
+  font-size: 13px;
+}
+
+/* SCROLL BUTTON */
+.scroll-top {
+  background: #3b82f6;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.scroll-top:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}

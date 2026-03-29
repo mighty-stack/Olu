@@ -1,0 +1,64 @@
+.cta-section {
+  min-height: 60vh;
+  background: radial-gradient(circle at center, #111827, #020617);
+  position: relative;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* GLOW EFFECT */
+.cta-section::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: rgba(59, 130, 246, 0.2);
+  filter: blur(120px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* TITLE */
+.cta-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* SUBTEXT */
+.cta-subtext {
+  max-width: 600px;
+  margin: auto;
+  color: #cbd5f5;
+  line-height: 1.6;
+}
+
+/* BUTTONS */
+.cta-buttons .btn {
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* HOVER */
+.btn-primary {
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #4f46e5, #2563eb);
+}
+
+.btn-outline-light:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .cta-title {
+    font-size: 26px;
+  }
+}

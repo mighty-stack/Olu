@@ -1,0 +1,42 @@
+.contact-section {
+  min-height: 100vh;
+  background: #020617;
+  color: #fff;
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  color: #fff;
+  padding: 12px;
+}
+
+.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: none;
+}
+
+.error {
+  color: #f87171;
+  font-size: 13px;
+}
+
+.error-message {
+  color: #f87171;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.success {
+  color: #4ade80;
+  margin-top: 10px;
+}

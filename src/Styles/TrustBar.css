@@ -1,0 +1,82 @@
+.trustbar-elite {
+  background: #020617;
+  overflow: hidden;
+  padding: 40px 0;
+  position: relative;
+}
+
+/* FADE EDGES */
+.trustbar-elite::before,
+.trustbar-elite::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+}
+
+.trustbar-elite::before {
+  left: 0;
+  background: linear-gradient(to right, #020617, transparent);
+}
+
+.trustbar-elite::after {
+  right: 0;
+  background: linear-gradient(to left, #020617, transparent);
+}
+
+/* MARQUEE */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: scroll 20s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+/* CONTENT */
+.marquee-content {
+  display: flex;
+}
+
+/* TECH ITEM */
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 30px;
+  padding: 10px 15px;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+
+.tech-item img {
+  width: 28px;
+  height: 28px;
+}
+
+.tech-item span {
+  color: #cbd5f5;
+  font-size: 14px;
+}
+
+/* HOVER EFFECT */
+.tech-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+/* ANIMATION */
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
