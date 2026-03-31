@@ -24,10 +24,10 @@ function Contact() {
   const sendEmail = (values, { setSubmitting, resetForm }) => {
     emailjs
       .sendForm(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        import.meta.env.SERVICE_ID,
+        import.meta.env.TEMPLATE_ID,
         form.current,
-        "YOUR_PUBLIC_KEY"
+        import.meta.env.PUBLIC_KEY
       )
       .then(
         () => {
