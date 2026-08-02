@@ -1,16 +1,14 @@
-import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, Send } from "lucide-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import emailjs from "@emailjs/browser";
 import "../Styles/contact.css";
 
 const validationSchema = Yup.object({
-  user_name: Yup.string()
+  name: Yup.string()
     .min(2, "Name must be at least 2 characters")
     .required("Name is required"),
-  user_email: Yup.string()
+  email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
   message: Yup.string()
@@ -19,29 +17,24 @@ const validationSchema = Yup.object({
 });
 
 function Contact() {
-  const form = useRef();
-
-  const sendEmail = (values, { setSubmitting, resetForm }) => {
-    emailjs
-      .sendForm(
-        import.meta.env.SERVICE_ID,
-        import.meta.env.TEMPLATE_ID,
-        form.current,
-        import.meta.env.PUBLIC_KEY
-      )
-      .then(
-        () => {
-          alert("Message sent successfully!");
-          resetForm();
-        },
-        (error) => {
-          alert("Failed to send message. Try again.");
-          console.log(error);
-        }
-      )
-      .finally(() => {
-        setSubmitting(false);
+  const sendEmail = async (values, { setSubmitting, resetForm }) => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
       });
+
+      if (!res.ok) throw new Error("Request failed");
+
+      alert("Message sent successfully!");
+      resetForm();
+    } catch (error) {
+      alert("Failed to send message. Try again.");
+      console.log(error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -60,11 +53,8 @@ function Contact() {
         </motion.div>
 
         <div className="row">
-
-          {/* LEFT INFO */}
           <div className="col-md-5 mb-4">
             <div className="contact-info">
-
               <div className="info-item">
                 <Mail size={20} />
                 <span>alabiolumide38@gmail.com</span>
@@ -82,34 +72,33 @@ function Contact() {
             </div>
           </div>
 
-          {/* FORM */}
           <div className="col-md-7">
             <Formik
-              initialValues={{ user_name: "", user_email: "", message: "" }}
+              initialValues={{ name: "", email: "", message: "" }}
               validationSchema={validationSchema}
               onSubmit={sendEmail}
             >
               {({ isSubmitting }) => (
-                <Form ref={form} className="contact-form">
+                <Form className="contact-form">
 
                   <div className="form-group">
                     <Field
                       type="text"
-                      name="user_name"
+                      name="name"
                       placeholder="Your Name"
                       className="form-control"
                     />
-                    <ErrorMessage name="user_name" component="div" className="error-message" />
+                    <ErrorMessage name="name" component="div" className="error-message" />
                   </div>
 
                   <div className="form-group">
                     <Field
                       type="email"
-                      name="user_email"
+                      name="email"
                       placeholder="Your Email"
                       className="form-control"
                     />
-                    <ErrorMessage name="user_email" component="div" className="error-message" />
+                    <ErrorMessage name="email" component="div" className="error-message" />
                   </div>
 
                   <div className="form-group">

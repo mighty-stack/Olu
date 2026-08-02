@@ -4,6 +4,7 @@
   position: relative;
   color: #fff;
   overflow: hidden;
+  isolation: isolate;
 }
 
 /* GLOW EFFECT */
@@ -17,6 +18,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cta-section .container,
+.cta-section .cta-buttons,
+.cta-section .cta-buttons .btn {
+  position: relative;
+  z-index: 1;
 }
 
 /* TITLE */
@@ -36,9 +46,11 @@
 
 /* BUTTONS */
 .cta-buttons .btn {
+  display: inline-block;
   padding: 12px 28px;
   border-radius: 8px;
   font-weight: 500;
+  text-decoration: none;
 }
 
 /* HOVER */
