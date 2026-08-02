@@ -15,8 +15,8 @@ export default async function handler(req, res) {
 
   try {
     await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>",
-      to: "alabiolumide38@gmail.com",
+      from: "Portfolio Contact <onboarding@resend.dev>", // swap once your domain is verified
+      to: "alabiolumide38@gmail.com", // must match your Resend account's signup email for now
       replyTo: email,
       subject: `New message from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
