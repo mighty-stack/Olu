@@ -3,7 +3,7 @@ import logisticsImg from "../assets/Images/Logistics.webp";
 import ecommerceImg from "../assets/Images/E-commerce.webp";
 import taskImg from "../assets/Images/Task.webp";
 import TechAgencyImg from "../assets/Images/TechAgency.webp";
-import HealthCareImg from "../assets/Images/HealthCare.webp";
+import HealthCareImg from "../assets/Images/Healthcare.webp";
 import EdTechImg from "../assets/Images/EdTech.png";
 
 const projects = [
