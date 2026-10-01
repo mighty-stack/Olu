@@ -1,127 +1,95 @@
-import { motion } from "framer-motion";
-import { Mail, Phone, Send } from "lucide-react";
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "../Styles/contact.css";
 
 const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(2, "Name must be at least 2 characters")
-    .required("Name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  message: Yup.string()
-    .min(10, "Message must be at least 10 characters")
-    .required("Message is required"),
+  name: Yup.string().min(2, "Name must be at least 2 characters").required("Name is required"),
+  email: Yup.string().email("Invalid email address").required("Email is required"),
+  message: Yup.string().min(10, "Message must be at least 10 characters").required("Message is required"),
 });
 
 function Contact() {
+  const [status, setStatus] = useState(null); // { ok: boolean, text: string }
+
   const sendEmail = async (values, { setSubmitting, resetForm }) => {
+    setStatus(null);
+
+    // Honeypot: real visitors never fill this hidden field, bots do
+    if (values.website) {
+      setStatus({ ok: true, text: "Message sent. I'll reply by email." });
+      resetForm();
+      setSubmitting(false);
+      return;
+    }
+
     try {
+      const { name, email, message } = values;
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ name, email, message }),
       });
-
       if (!res.ok) throw new Error("Request failed");
 
-      alert("Message sent successfully!");
+      setStatus({ ok: true, text: "Message sent. I'll reply by email." });
       resetForm();
     } catch (error) {
-      alert("Failed to send message. Try again.");
-      console.log(error);
+      console.error(error);
+      setStatus({
+        ok: false,
+        text: "Couldn't send that. Email me directly at alabiolumide38@gmail.com.",
+      });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="contact-section d-flex align-items-center">
-      <div className="container">
+    <section id="contact" className="pf-section contact">
+      <div className="wrap">
+        <p className="mono rv">Contact</p>
+        <h2 className="rv">Have a project? Let's <em>talk</em>.</h2>
+        <a className="mail rv" href="mailto:alabiolumide38@gmail.com">alabiolumide38@gmail.com</a>
+        <p className="contact-note rv">Open to freelance projects, collaborations and remote roles.</p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-5"
+        <Formik
+          initialValues={{ name: "", email: "", message: "", website: "" }}
+          validationSchema={validationSchema}
+          onSubmit={sendEmail}
         >
-          <h2>Contact Me</h2>
-          <p>Let’s Work Together.</p>
-          <p>Have a project in mind or just want to say hi? Send me a message and I'll get back to you soon!</p>
-        </motion.div>
-
-        <div className="row">
-          <div className="col-md-5 mb-4">
-            <div className="contact-info">
-              <div className="info-item">
-                <Mail size={20} />
-                <span>alabiolumide38@gmail.com</span>
+          {({ isSubmitting }) => (
+            <Form className="contact-form rv" noValidate>
+              <div className="contact-field">
+                <Field type="text" name="name" placeholder="Your name" aria-label="Name" />
+                <ErrorMessage name="name" component="div" className="contact-error" />
               </div>
 
-              <div className="info-item">
-                <Phone size={20} />
-                <span>+234 816 805 3286</span>
+              <div className="contact-field">
+                <Field type="email" name="email" placeholder="Your email" aria-label="Email" />
+                <ErrorMessage name="email" component="div" className="contact-error" />
               </div>
 
-              <p className="mt-4">
-                Available for freelance projects, collaborations, and remote work.
-              </p>
+              <div className="contact-field">
+                <Field as="textarea" name="message" rows="4" placeholder="What do you need built?" aria-label="Message" />
+                <ErrorMessage name="message" component="div" className="contact-error" />
+              </div>
 
-            </div>
-          </div>
+              {/* honeypot */}
+              <Field type="text" name="website" tabIndex="-1" autoComplete="off" className="contact-hp" aria-hidden="true" />
 
-          <div className="col-md-7">
-            <Formik
-              initialValues={{ name: "", email: "", message: "" }}
-              validationSchema={validationSchema}
-              onSubmit={sendEmail}
-            >
-              {({ isSubmitting }) => (
-                <Form className="contact-form">
+              <button type="submit" className="pf-btn" disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send message"}
+              </button>
 
-                  <div className="form-group">
-                    <Field
-                      type="text"
-                      name="name"
-                      placeholder="Your Name"
-                      className="form-control"
-                    />
-                    <ErrorMessage name="name" component="div" className="error-message" />
-                  </div>
-
-                  <div className="form-group">
-                    <Field
-                      type="email"
-                      name="email"
-                      placeholder="Your Email"
-                      className="form-control"
-                    />
-                    <ErrorMessage name="email" component="div" className="error-message" />
-                  </div>
-
-                  <div className="form-group">
-                    <Field
-                      as="textarea"
-                      name="message"
-                      placeholder="Your Message"
-                      rows="5"
-                      className="form-control"
-                    />
-                    <ErrorMessage name="message" component="div" className="error-message" />
-                  </div>
-
-                  <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
-                    <Send size={18} /> {isSubmitting ? "Sending..." : "Send Message"}
-                  </button>
-
-                </Form>
+              {status && (
+                <p role="status" className={status.ok ? "contact-ok" : "contact-error"}>
+                  {status.text}
+                </p>
               )}
-            </Formik>
-          </div>
-
-        </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </section>
   );

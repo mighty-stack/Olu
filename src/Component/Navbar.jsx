@@ -1,90 +1,68 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import "../Styles/Navbar.css";
 
+const items = [
+  ["work", "Work"],
+  ["stack", "Stack"],
+  ["about", "About"],
+  ["contact", "Contact"],
+];
+
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState("home");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState("");
+  const [open, setOpen] = useState(false);
 
-  // Detect scroll
+  // Highlight the section currently in the middle of the viewport
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      const sections = ["home", "projects", "skills", "about", "contact"];
-      sections.forEach((section) => {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop - 100;
-          const height = el.offsetHeight;
-
-          if (window.scrollY >= top && window.scrollY < top + height) {
-            setActive(section);
-          }
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        }),
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    items.forEach(([id]) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
   }, []);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
   return (
-    <motion.nav
-      className={`navbar-custom ${scrolled ? "scrolled" : ""}`}
-      initial={{ y: -80 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className="container d-flex justify-content-between align-items-center">
+    <nav className="nav">
+      <div className="wrap nav-row">
+        <a className="brand" href="#top">Olumide Alabi</a>
 
-        {/* LOGO */}
-        <h4 className="logo">Olumide</h4>
-
-        {/* DESKTOP LINKS */}
-        <ul className="nav-links d-none d-md-flex">
-          {["home", "projects", "skills", "about", "contact"].map((item) => (
-            <li key={item}>
-              <a
-                href={`#${item}`}
-                className={active === item ? "active" : ""}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </a>
+        <ul className="nav-links">
+          {items.map(([id, label]) => (
+            <li key={id}>
+              <a href={`#${id}`} className={active === id ? "active" : ""}>{label}</a>
             </li>
           ))}
         </ul>
 
-        {/* MOBILE ICON */}
-        <div className="mobile-menu-icon d-md-none" onClick={toggleMenu}>
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+        <div className="nav-right">
+          <a className="pill" href="#contact">Hire me</a>
+          <button
+            className="nav-toggle"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </div>
 
-      {/* MOBILE MENU */}
-      {menuOpen && (
-        <motion.div
-          className="mobile-menu"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          {["home", "projects", "skills", "about", "contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item}`}
-              onClick={() => setMenuOpen(false)}
-              className={active === item ? "active" : ""}
-            >
-              {item}
-            </a>
+      {open && (
+        <div className="nav-mobile">
+          {items.map(([id, label]) => (
+            <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{label}</a>
           ))}
-        </motion.div>
+        </div>
       )}
-    </motion.nav>
+    </nav>
   );
 }
 

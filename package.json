@@ -5,21 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node server.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
-    "and": "^0.0.3",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "formik": "^2.4.9",
-    "framer-motion": "^12.38.0",
-    "lottie-react": "^2.4.1",
     "lucide-react": "^1.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "resend": "^6.18.1",
+    "resend": "^6.28.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {

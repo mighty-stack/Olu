@@ -1,100 +1,44 @@
-import { motion } from "framer-motion";
-import Lottie from "lottie-react";
-import { ArrowDown } from "lucide-react";
-import heroAnimation from "../assets/Hero.json";
-
 import "../Styles/Hero.css";
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: "easeOut" },
-  },
-};
+const proof = [
+  ["~24", "posts live on a client CMS I built"],
+  ["4", "admins publishing on it today"],
+  ["3", "user roles in one logistics platform"],
+  ["10", "projects shipped across the MERN stack"],
+];
 
 function Hero() {
   return (
-    <section id="home" className="hero-section d-flex align-items-center">
-      <div className="container">
-        <div className="row align-items-center">
-
-          {/* LEFT SIDE */}
-          <div className="col-md-6">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-            >
-              <motion.p className="hero-intro" variants={fadeUp}>
-                Hi, I'm
-              </motion.p>
-
-              <motion.h1 className="hero-title" variants={fadeUp}>
-                Olumide
-              </motion.h1>
-
-              <motion.h2 className="hero-subtitle" variants={fadeUp}>
-                I build high-performance web applications that convert.
-              </motion.h2>
-
-              <motion.h2 className="hero-subtitle" variants={fadeUp}>
-                Helping startups and businesses turn ideas into fast, scalable and user-focused products.
-              </motion.h2>
-
-              <motion.div className="hero-buttons mt-4" variants={fadeUp}>
-                <a href="#projects" className="btn btn-primary me-3">
-                  View Projects
-                </a>
-
-                <a href="#contact" className="btn btn-outline-light">
-                  Hire Me
-                </a>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* RIGHT SIDE (LOTTIE) */}
-          <div className="col-md-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Lottie
-                animationData={heroAnimation}
-                loop={true}
-                className="hero-lottie"
-              />
-            </motion.div>
+    <header id="top" className="hero">
+      <div className="wrap hero-layout">
+        <div className="hero-copy">
+          <p className="mono rv">Full-stack developer · Available for freelance &amp; remote work</p>
+          <h1 className="rv">I build software people <em>actually use</em>.</h1>
+          <p className="lede rv">
+            I design the database, write the API and build the interface.{" "}
+            <b>Auth, payments, role-based admin tools, an AI tutor</b>: the parts that make a
+            product work, not just look finished.
+          </p>
+          <div className="hero-cta rv">
+            <a className="pf-btn" href="#work">See the work</a>
+            <a className="tlink" href="#contact">Or email me directly</a>
           </div>
         </div>
 
-        {/* SCROLL INDICATOR */}
-        <motion.div
-          className="scroll-indicator"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 10 }}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        >
-          <ArrowDown size={28} />
-        </motion.div>
+        <div className="hero-portrait rv">
+          <img src="/headshot.webp" alt="Olumide Alabi" />
+        </div>
+
+        <div className="proof rv">
+          {proof.map(([num, label]) => (
+            <div key={label}>
+              <b>{num}</b>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
-    </section>
+    </header>
   );
 }
 

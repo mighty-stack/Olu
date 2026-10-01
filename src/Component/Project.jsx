@@ -1,117 +1,73 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Github, ExternalLink } from "lucide-react";
-import projects from "../Data/Project";
+import projects, { more } from "../Data/Project";
 import "../Styles/Project.css";
 
+const featured = projects.filter((p) => p.visible !== false);
+
 function Projects() {
-  const [index, setIndex] = useState(0);
-
-  const nextSlide = () => {
-    setIndex((prev) => (prev + 1) % projects.length);
-  };
-
-  const prevSlide = () => {
-    setIndex((prev) => (prev - 1 + projects.length) % projects.length);
-  };
-
-  const project = projects[index];
-
   return (
-    <section id="projects" className="projects-section d-flex align-items-center">
-      <div className="container text-center">
-
-        <h2 className="mb-5">Featured Projects</h2>
-        <h2 className="mb-5">
-                        A selection of projects showcasing my ability to build scalable, high-performance web applications.
-        </h2>
-
-        <div className="slider-container position-relative">
-
-          {/* SLIDE */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              className="project-slide"
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="row align-items-center">
-
-                {/* IMAGE */}
-                <div className="col-md-6">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="img-fluid project-slide-image"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* CONTENT */}
-                <div className="col-md-6 text-start">
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-
-                  {/* TECH */}
-                  <div className="mb-3">
-                    {project.tech.map((tech, i) => (
-                      <span key={i} className="tech-badge me-2">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* BUTTONS */}
-                  <div className="mt-4">
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-primary me-3"
-                    >
-                      <ExternalLink size={18} /> Live
-                    </a>
-
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-outline-light"
-                    >
-                      <Github size={18} /> Code
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* NAV BUTTONS */}
-          <button className="nav-btn left" onClick={prevSlide}>
-            <ChevronLeft size={30} />
-          </button>
-
-          <button className="nav-btn right" onClick={nextSlide}>
-            <ChevronRight size={30} />
-          </button>
-
+    <section id="work" className="pf-section">
+      <div className="wrap">
+        <div className="sec-head">
+          <h2>Selected <em>work</em></h2>
+          <span className="mono">{String(featured.length).padStart(2, "0")} projects</span>
         </div>
 
-        {/* DOT INDICATORS */}
-        <div className="dots mt-4">
-          {projects.map((_, i) => (
-            <span
-              key={i}
-              className={`dot ${i === index ? "active" : ""}`}
-              onClick={() => setIndex(i)}
-            ></span>
+        {featured.map((p, i) => (
+          <article className="case rv" key={p.title}>
+            <div className="shot">
+              <div className="shot-bar">
+                <i /><i /><i />
+                <span>{p.url}</span>
+              </div>
+              {p.image ? (
+                <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" />
+              ) : (
+                <div className="shot-ph">Screenshot</div>
+              )}
+            </div>
+
+            <div className="info">
+              <span className="mono tag">
+                {String(i + 1).padStart(2, "0")} · {p.tag}
+              </span>
+              <h3>{p.title}</h3>
+              <p>{p.summary}</p>
+
+              <ul>
+                {p.built.map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
+
+              <div className="stack-tags">
+                {p.tech.map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
+              </div>
+
+              <div className="ilinks">
+                {p.live && (
+                  <a href={p.live} target="_blank" rel="noreferrer">Live site ↗</a>
+                )}
+                {p.github && (
+                  <a href={p.github} target="_blank" rel="noreferrer">Code ↗</a>
+                )}
+                {p.codeOnRequest && <a href="#contact">Code walkthrough on request →</a>}
+              </div>
+            </div>
+          </article>
+        ))}
+
+        <div className="more rv">
+          <p className="mono">More work</p>
+          {more.map((m) => (
+            <a key={m.title} href={m.href} target="_blank" rel="noreferrer">
+              <span>{m.title}</span>
+              <small>{m.text}</small>
+              <span>↗</span>
+            </a>
           ))}
         </div>
-
       </div>
     </section>
   );
